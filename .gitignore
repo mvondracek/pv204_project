@@ -1,2 +1,6 @@
 /SimpleAPDU/nbproject/private/
 /SimpleAPDU/build/
+
+# IntelliJ IDEA files
+.idea/
+*.iml
