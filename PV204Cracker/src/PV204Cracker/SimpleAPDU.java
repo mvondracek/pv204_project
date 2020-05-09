@@ -340,13 +340,13 @@ public class PV204Cracker {
         
         /* Verify ZKP of x3, x4 */
         if (verifyZKP(G, pointG3, zkpx3.getV(), zkpx3.getr(), CARD_ID) ){
-            System.out.println("ZKP x3 OK.");
+            // System.out.println("ZKP x3 OK.");
         } else {
             System.out.println("ZKP x3 failed.");
             return false;
         }
         if (verifyZKP(G, pointG4, zkpx4.getV(), zkpx4.getr(), CARD_ID) ){
-            System.out.println("ZKP x4 OK.");
+            // System.out.println("ZKP x4 OK.");
         } else {
             System.out.println("ZKP x4 failed.");
             return false;
@@ -389,7 +389,7 @@ public class PV204Cracker {
         
         /* Verify ZKP of x4*s */
         if (verifyZKP(GB, B, zkpx4s.getV(), zkpx4s.getr(), CARD_ID) ){
-            System.out.println("ZKP x4*s OK.");
+            // System.out.println("ZKP x4*s OK.");
         } else {
             System.out.println("ZKP x4*s failed.");
             return false;
@@ -462,7 +462,7 @@ public class PV204Cracker {
             }
         
             m_aesKey = new SecretKeySpec(newKey, "AES");
-            System.out.println(m_aesKey.getEncoded().length);
+            // System.out.println(m_aesKey.getEncoded().length);
             byte [] iv = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}; //well helll we know, fast fix!
             IvParameterSpec ivParams = new IvParameterSpec(iv);
             m_encryptCipher.init(Cipher.ENCRYPT_MODE, m_aesKey, ivParams);
