@@ -1,6 +1,8 @@
 /SimpleAPDU/nbproject/private/
 /SimpleAPDU/build/
 
+/PV204Cracker/build/
+
 # IntelliJ IDEA files
 .idea/
 *.iml
