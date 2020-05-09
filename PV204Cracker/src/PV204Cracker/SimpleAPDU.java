@@ -594,4 +594,33 @@ public class SimpleAPDU {
             return retBytes;
         }
     }
+
+    boolean check_pin(CardManager cardMngr, byte[] pin) throws Exception {
+        counter = (byte) 0x00;
+        try {
+            if (!CreateSecureChannel(cardMngr, pin)) {
+                cardMngr.transmit(deselectAPDU());
+            }
+        }catch (InvalidKeyException e){
+            return false;
+        }
+
+        String testMessage = "whate we have got here... Is a failiure in communication";
+        byte[] testBytes = testMessage.getBytes();
+        /* TEST - HASH with card*/
+        CommandAPDU command4 = new CommandAPDU(0xB0, INS_HASH, 0x0, 0x0, testBytes, 32);
+        ResponseAPDU response4;
+        try {
+            response4 = cardMngr.transmit(secureWrapOutgoing(command4));
+        }catch (IllegalStateException e){
+            return false;
+        }
+        counter++;
+        try {
+            byte[] hash = secureUnwrapIncoming(response4);
+        }catch (ArrayIndexOutOfBoundsException exception){
+            return false;
+        }
+        return true;
+    }
 }
