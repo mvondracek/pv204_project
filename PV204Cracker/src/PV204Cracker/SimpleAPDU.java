@@ -162,8 +162,9 @@ public class SimpleAPDU {
     return new String(hexChars);
 }
     
-    private boolean CreateSecureChannel(CardManager cardMngr)  throws Exception {
         
+    private boolean CreateSecureChannel(CardManager cardMngr, byte[] pin)  throws Exception {
+        BigInteger sharedBigInt = BigIntegers.fromUnsignedByteArray(pin);
         byte[] APDUdata = JPAKE1();
         if (APDUdata.length != JPAKE1_TOTAL_LENGTH) {
             // Generated APDU data has different length than they should have
@@ -184,7 +185,7 @@ public class SimpleAPDU {
             return false;
         }
         
-        byte[] APDUdata3 = JPAKE3();
+        byte[] APDUdata3 = JPAKE3(sharedBigInt);
         if (APDUdata3.length != JPAKE3_TOTAL_LENGTH) {
             // Generated APDU data has different length than they should have
             return false;
@@ -197,7 +198,7 @@ public class SimpleAPDU {
             return false;
         }
         
-        if (!JPAKE4(responseData4)){
+        if (!JPAKE4(responseData4, sharedBigInt)){
             // ZKP for x4 * s was not correct
             System.out.println(" JPAKE4 fail.");
             return false;
@@ -275,14 +276,14 @@ public class SimpleAPDU {
         return true;
     }
     
-    private byte[] JPAKE3() throws IOException {
+    private byte[] JPAKE3(BigInteger sharedBigInt) throws IOException {
         /* Compute GA = G1 + G3 + G4 */
         GA = pointG1.add(pointG3).add(pointG4).normalize(); 
     	
         /* Compute A = (G1 + G3 + G4) x [x2*s] and a ZKP for x2*s */
-        A = GA.multiply(x2.multiply(SHARED_BIG_INT).mod(n));				
-    	SchnorrZKP zkpx2s = generateZKP(GA, n, x2.multiply(SHARED_BIG_INT).mod(n), A, PC_ID);
-		
+        A = GA.multiply(x2.multiply(sharedBigInt).mod(n));
+        SchnorrZKP zkpx2s = generateZKP(GA, n, x2.multiply(sharedBigInt).mod(n), A, PC_ID);
+
         /* Encode A and zkpx2s and send data to card */
         ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
         
@@ -294,7 +295,7 @@ public class SimpleAPDU {
         return apduData;
     }
     
-    private boolean JPAKE4(byte[] response){
+    private boolean JPAKE4(byte[] response, BigInteger sharedBigInt){
         ByteArrayInputStream stream = new ByteArrayInputStream(response);
         byte[] pointBytes = new byte[POINT_LENGTH];
         byte[] zkpBytes = new byte[ZKP_LENGTH];
@@ -317,7 +318,7 @@ public class SimpleAPDU {
         }
         
         /* Computed K = (B - (G4 x [x2*s])) x [x2] to get a shared secret */
-        pointK = B.subtract(pointG4.multiply(x2.multiply(SHARED_BIG_INT))).multiply(x2).normalize();
+        pointK = B.subtract(pointG4.multiply(x2.multiply(sharedBigInt))).multiply(x2).normalize();
         BigInteger K = getSHA256(pointK.normalize().getXCoord().toBigInteger());
         byte [] Karr = K.toByteArray();
         if(Karr.length > 32) {
