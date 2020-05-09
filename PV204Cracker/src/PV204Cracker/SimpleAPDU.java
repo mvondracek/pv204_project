@@ -58,7 +58,7 @@ import org.bouncycastle.util.BigIntegers;
  *
  * @author Petr Svenda (petrs), Dusan Klinec (ph4r05)
  */
-public class PV204Cracker {
+public class SimpleAPDU {
     private static String APPLET_AID = "482871d58ab7465e5e05";
     private static byte APPLET_AID_BYTE[] = Util.hexStringToByteArray(APPLET_AID);
 
@@ -125,7 +125,7 @@ public class PV204Cracker {
     private Checksum m_checksum = null;
         
     
-    protected PV204Cracker() {
+    protected SimpleAPDU() {
         CARD_ID = new byte[] {'c', 'a', 'r', 'd'};
         PC_ID = new byte[] {'u', 's', 'e', 'r'};
         PIN = new byte[] {0x01, 0x02, 0x03, 0x04};
@@ -141,9 +141,9 @@ public class PV204Cracker {
             m_encryptCipher = Cipher.getInstance("AES/CBC/NoPadding");
             m_decryptCipher = Cipher.getInstance("AES/CBC/NoPadding");
         } catch (NoSuchAlgorithmException ex) {
-            Logger.getLogger(PV204Cracker.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(SimpleAPDU.class.getName()).log(Level.SEVERE, null, ex);
         } catch (NoSuchPaddingException ex) {
-            Logger.getLogger(PV204Cracker.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(SimpleAPDU.class.getName()).log(Level.SEVERE, null, ex);
         }
 
 
