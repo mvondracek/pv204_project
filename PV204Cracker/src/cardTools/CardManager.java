@@ -168,11 +168,14 @@ public class CardManager {
     }
 
     private void log(CommandAPDU cmd) {
+        /*
         System.out.printf("--> %s\n", Util.toHex(cmd.getBytes()),
                 cmd.getBytes().length);
+         */
     }
 
     private void log(ResponseAPDU response, long time) {
+        /*
         String swStr = String.format("%02X", response.getSW());
         byte[] data = response.getData();
         if (data.length > 0) {
@@ -181,6 +184,7 @@ public class CardManager {
         } else {
             System.out.printf("<-- %s [%d ms]\n", swStr, time);
         }
+        */
     }
 
     private void log(ResponseAPDU response) {

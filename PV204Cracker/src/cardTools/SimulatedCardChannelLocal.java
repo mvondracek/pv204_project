@@ -64,10 +64,13 @@ public class SimulatedCardChannelLocal extends CardChannel {
     
     
     private static void log(CommandAPDU cmd) {
+        /*
         System.out.printf("--> [%s] %s\n", Util.toHex(cmd.getBytes()), cmd.getBytes().length);
+         */
     }
 
     private static void log(ResponseAPDU response, long time) {
+        /*
         String swStr = String.format("%02X", response.getSW());
         byte[] data = response.getData();
         if (data.length > 0) {
@@ -79,6 +82,7 @@ public class SimulatedCardChannelLocal extends CardChannel {
         if (time > 0) {
             System.out.printf(String.format("Elapsed time %d ms\n", time));
         }
+         */
     }
 
     private static void log(ResponseAPDU response) {
