@@ -207,7 +207,7 @@ public class SimpleAPDU {
     }
     
 
-    private CommandAPDU deselectAPDU() {
+    static CommandAPDU deselectAPDU() {
         /* Creates deselect APDU */
         return new CommandAPDU(0xB0, 0x03, 0x00, 0x00);
     }
