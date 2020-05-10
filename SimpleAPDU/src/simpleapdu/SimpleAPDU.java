@@ -196,6 +196,14 @@ public class SimpleAPDU {
             byte[] hash = main.secureUnwrapIncoming(response4);
             System.out.println("Hash of \"" + testMessage + "\":");
             System.out.println(bytesToHex(hash));
+
+            System.out.println("send CLA_SIMPLEAPPLET(INS_END_SESSION)");
+            final byte CLA_SIMPLEAPPLET = (byte) 0xB0;
+            final byte INS_END_SESSION = (byte) 0x03;
+            cardMngr.transmit(new CommandAPDU(CLA_SIMPLEAPPLET, INS_END_SESSION, 0x0, 0x0));
+            System.out.println("session terminated");
+
+            System.out.println("Try to reuse last session.");
             
             
             
