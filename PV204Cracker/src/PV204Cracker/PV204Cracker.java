@@ -20,7 +20,7 @@ import java.util.logging.Logger;
  */
 public class PV204Cracker {
     public static final boolean PIN_IS_NUMERIC = true;
-    public static final int PRINT_INFO_RATE = 1; // 1-10
+    public static final int PRINT_INFO_RATE = 400; // 1-10
     private static final String APPLET_AID = "482871d58ab7465e5e05";
     private static final byte[] APPLET_AID_BYTE = Util.hexStringToByteArray(APPLET_AID);
 
@@ -48,6 +48,9 @@ public class PV204Cracker {
             }
             System.out.println("Done.");
 
+            System.out.printf("Verbosity: output info after every %d tried PINs\n", PRINT_INFO_RATE);
+
+            System.out.println("Start cracking...");
 
             PinIterator pinIterator;
             byte[] pin = null;
@@ -72,10 +75,11 @@ public class PV204Cracker {
                     for (byte b : pin) {
                         sb.append(String.format("%02X ", b));
                     }
-                    System.out.printf("%s \tpin = %s %21s\n", LocalDateTime.now().format(formatter), sb.toString(), java.util.Arrays.toString(pin));
+                    System.out.printf("%s #%d\tpin = %s %21s\n", LocalDateTime.now().format(formatter), i, sb.toString(), java.util.Arrays.toString(pin));
                 }
 
                 correct = pv204Application.check_pin(cardMngr, pin);
+                correct = false;
             }
             long time_end = System.nanoTime();
             long time_elapsed = time_end - time_start;
